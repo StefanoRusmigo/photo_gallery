@@ -1,4 +1,5 @@
 <?php
+require_once('initialize.php');
 
 function strip_zeros_from_date( $marked_string="" ) {
   // first remove the marked zeros
@@ -37,4 +38,37 @@ function include_layout_template($template=""){
 
   include(SITE_ROOT.DS.'public'.DS.'layouts'.DS.$template);
 }
+
+
+
+function log_action($action, $message=""){
+  $file = SITE_ROOT.DS.'private'.DS.'logs'.DS.'log.txt';
+
+ if($handle = fopen($file, 'a')){
+
+  $data = strftime("%Y-%m-%d %H:%M:%S",time())." | ".$action.": ".$message."\n";
+
+  fwrite($handle, $data);
+
+  fclose($handle);
+ }
+ }
+
+ function log_read(){
+  $file = SITE_ROOT.DS.'private'.DS.'logs'.DS.'log.txt';
+ if ($handle = fopen($file, 'r')){
+  return file_get_contents($file);
+  fclose($handle);
+
+ }
+}
+
+ function log_clear(){
+  $file = SITE_ROOT.DS.'private'.DS.'logs'.DS.'log.txt';
+
+file_put_contents($file, "");
+
+}
+
+
 ?>

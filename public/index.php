@@ -9,4 +9,10 @@ foreach ($users as $user) {
 	echo $user->full_name()."<br/>";
 }
 
+$user = new User;
+$user->username = "Tests";
+$user->password = "passs";
+$user->first_name = "Giws";
+$user->last_name = "rgoss";
+$user->create();
 ?>

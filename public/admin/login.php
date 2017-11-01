@@ -3,6 +3,7 @@ require_once("../../private/includes/initialize.php");
 
 
 if($session->is_logged_in()) {
+
   redirect_to("index.php");
 }
 
@@ -17,6 +18,7 @@ if (isset($_POST['submit'])) { // Form has been submitted.
 	
   if ($found_user) {
     $session->login($found_user);
+  	log_action("Login","{$found_user->username} logged in");
     redirect_to("index.php");
   } else {
     // username/password combo was not found in the database
@@ -32,13 +34,10 @@ if (isset($_POST['submit'])) { // Form has been submitted.
 <html>
 <?php include_layout_template('admin_header.php') ?>
   
-  <body>
-    <div id="header">
-      <h1>Photo Gallery</h1>
-    </div>
+ 
     <div id="main">
 		<h2>Staff Login</h2>
-		<?php echo output_message($message); ?>
+		<?php if(isset($message)){echo output_message($message);} ?>
 
 		<form action="login.php" method="post">
 		  <table>

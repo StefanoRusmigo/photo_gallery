@@ -39,7 +39,27 @@ class User extends DatabaseObject {
 		
 	}
 
-	
+	public function create()
+	{
+		global $database;
+		$database->escape_value($this->username);
+
+		$sql = "INSERT INTO users (";
+	  	$sql .= "username, password, first_name, last_name";
+	  	$sql .= ") VALUES ('";
+		$sql .= $database->escape_value($this->username) ."', '";
+		$sql .= $database->escape_value($this->password) ."', '";
+		$sql .= $database->escape_value($this->first_name) ."', '";
+		$sql .= $database->escape_value($this->last_name) ."')";
+
+		if($database->query($sql)){
+			$this->id = insert_id();
+			return true;
+
+		}else{
+			return false;
+		}
+	}
 
 
 

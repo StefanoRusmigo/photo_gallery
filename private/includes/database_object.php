@@ -44,6 +44,9 @@ public static function instantiate($record)
 		return $object;
 	}
 
+
+
+
 	
 	private function has_attribute($attribute) {
 	  // get_object_vars returns an associative array with all attributes 
