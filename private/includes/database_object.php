@@ -44,6 +44,87 @@ public static function instantiate($record)
 		return $object;
 	}
 
+	public  function save()
+	{
+		return isset($this->id) ? $this->update() : $this->create();
+
+	}
+
+	
+
+	protected function attributes()
+	{
+		$attributes = array();
+		foreach (static::$db_fields as $field) {
+			if(property_exists($this, $field)) {
+				$attributes[$field] = $this->$field;
+			}
+		}
+		return $attributes;
+	}
+
+	protected function sanitized_attributes(){
+		 global $database;
+
+		 $clean_attributes = array();
+
+		 foreach ($this->attributes() as $key => $value) {
+		 	$clean_attributes[$key] = $database->escape_value($value);
+		 }
+		 return $clean_attributes;
+	}
+
+
+	public function create()
+	{
+		global $database;
+		$attributes = $this->sanitized_attributes();
+
+		$sql = "INSERT INTO ".static::$table_name." (";
+	  	$sql .= join(", ", array_keys($attributes));
+	  	$sql .= ") VALUES ('";
+		$sql .= join("', '", array_values($attributes)) ."')";
+
+		if($database->query($sql)){
+			$this->id = $database->insert_id();
+			return true;
+
+		}else{
+			return false;
+		}
+	}
+
+
+	public function update()
+	{
+		global $database;
+		$attributes = $this->sanitized_attributes();
+		$attributes_pairs = array();
+		foreach ($attributes as $key => $value) {
+			$attributes_pairs[] = "{$key} = '{$value}'";
+		}
+		
+		$sql = "UPDATE users SET ";
+		$sql .= join(", ", $attributes_pairs);
+		$sql .= " WHERE id=". $database->escape_value($this->id);
+
+		$database->query($sql);
+		return ($database->affected_rows() == 1) ? true : false;
+
+
+
+	}
+
+public function delete()
+	{
+		global $database;
+
+		$sql = "DELETE FROM ".static::$table_name;
+		$sql.= " WHERE id=".$database->escape_value($this->id);
+		$sql.= " LIMIT 1";
+		$database->query($sql);
+		return ($database->affected_rows() == 1) ? true : false;
+	}
 
 
 
@@ -56,4 +137,6 @@ public static function instantiate($record)
 	  // Will return true or false
 	  return array_key_exists($attribute, $object_vars);
 	}
+
+
 }
