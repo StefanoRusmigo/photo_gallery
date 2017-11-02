@@ -13,7 +13,8 @@ class DatabaseObject {
 
 	public static function find($id)
 	{
-		$sql = "SELECT * FROM ".static::$table_name." WHERE id={$id} LIMIT 1";
+		global $database;
+		$sql = "SELECT * FROM ".static::$table_name." WHERE id=".$database->escape_value($id)." LIMIT 1";
 		$result = self::find_by_sql($sql);
 		return !empty($result) ? array_shift($result) : false; 
 
