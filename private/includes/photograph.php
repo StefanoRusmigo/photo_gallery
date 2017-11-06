@@ -114,6 +114,13 @@ class Photograph extends DatabaseObject{
 	}
 
 
+	public function comments(){
+		global $database;
+		$sql = "SELECT * FROM comments WHERE photograph_id =".$database->escape_value($this->id);
+		return $this->find_by_sql($sql,"Comment");
+
+	}
+
 }
 
 ?>

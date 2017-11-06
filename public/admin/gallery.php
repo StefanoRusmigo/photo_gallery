@@ -13,6 +13,7 @@ if (!$session->is_logged_in()) { redirect_to("login.php"); }
 		<th>Caption</th>
 		<th>Size</th>
 		<th>Type</th>
+		<th>Comment</th>
 		<th>&nbsp;</th>
 	</tr>
 
@@ -25,6 +26,13 @@ if (!$session->is_logged_in()) { redirect_to("login.php"); }
  		<td><?php echo $photo->size_text(); ?></td>	
  		<td><?php echo $photo->type; ?></td>	
  		<td><a href="delete_photo.php?id=<?php echo $photo->id; ?>">delete</a></td>	
+ 		<td>
+ 			<a href="comments.php?id=<?php echo $photo->id ?>">
+ 			<?php echo count($photo->comments()); ?>
+ 			</a>
+ 		</td>
+
+
  	</tr>
 
   <?php endforeach; ?>
