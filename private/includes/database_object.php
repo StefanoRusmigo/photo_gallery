@@ -21,6 +21,17 @@ class DatabaseObject {
 		
 	}
 
+	public static function count_all(){
+		global $database;
+
+		$sql = "SELECT COUNT(*) FROM ".static::$table_name;
+		$row = $database->query($sql);
+		$result = $database->fetch_array($row);
+		return array_shift($result);
+	}
+
+
+
 public static function find_by_sql($sql,$class_name=null)
 	{
 		global $database;
@@ -116,7 +127,7 @@ public static function instantiate($record,$class_name)
 
 	}
 
-public function delete()
+	public function delete()
 	{
 		global $database;
 
@@ -125,6 +136,13 @@ public function delete()
 		$sql.= " LIMIT 1";
 		$database->query($sql);
 		return ($database->affected_rows() == 1) ? true : false;
+	}
+
+	public function pagination($page,$per_page){
+		$offset = $per_page *($page -1);
+		$sql = "SELECT * FROM ".static::$table_name." LIMIT ".$per_page." OFFSET ".$offset;
+		return self::find_by_sql($sql);
+
 	}
 
 
