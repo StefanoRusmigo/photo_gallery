@@ -16,7 +16,9 @@
 
 		if($comment->save()){
 
-			//redirect_to("photo.php?id={$photo->id}");
+			$comment->send_email();
+
+			redirect_to("photo.php?id={$photo->id}");
 
 		}else{
 			$message =" There was an error saving your commment";

@@ -23,6 +23,11 @@ require_once(LIB_PATH.DS.'functions.php');
 // load core objects
 require_once(LIB_PATH.DS.'session.php');
 require_once(LIB_PATH.DS.'database.php');
+require_once(LIB_PATH.DS.'PHPMailer'.DS.'src'.DS.'Exception.php');
+require_once(LIB_PATH.DS.'PHPMailer'.DS.'src'.DS.'SMTP.php');
+require_once(LIB_PATH.DS.'PHPMailer'.DS.'src'.DS.'PHPMailer.php');
+
+
 
 // load database-related classes
 require_once(LIB_PATH.DS.'database_object.php');
